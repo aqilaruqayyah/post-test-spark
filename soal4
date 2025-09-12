@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Soal 4 - Post-Test Spark</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #cce7ff;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .soal-box {
+      background: #ffffffcc;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #6a5acd;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 700px;
+      height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      background: #f1f1f1;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      model-viewer {
+        height: 200px;
+      }
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .input-container label {
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .input-container input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #5841a1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="soal-box">
+  <h2>Soal 4</h2>
+  <p>✨ Suatu kolam renang diisi penuh air. Panjang 12 m, lebar 1/3 dari panjang, kedalaman awal 1 m, kedalaman akhir 5 m. Hitung volume air pada kolam tersebut.</p>
+
+  <div class="input-container">
+    <div><label>Panjang (m):</label><input type="number" id="panjang" value="0" min="0" step="0.1"></div>
+    <div><label>Lebar (m):</label><input type="number" id="lebar" value="0" min="0" step="0.1"></div>
+    <div><label>Kedalaman awal (m):</label><input type="number" id="kedalamanAwal" value="0" min="0" step="0.1"></div>
+    <div><label>Kedalaman akhir (m):</label><input type="number" id="kedalamanAkhir" value="0" min="0" step="0.1"></div>
+    <button id="btn">Lihat Model 3D</button>
+  </div>
+
+  <model-viewer id="kolam3d"
+                src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/swimming_pool_343.glb"
+                alt="Kolam Renang 3D"
+                ar
+                camera-controls>
+  </model-viewer>
+
+  <input type="text" id="jawaban4" placeholder="Tulis jawabanmu di sini">
+  <br>
+  <button onclick="submitJawaban()">Kirim Jawaban</button>
+</div>
+
+<script>
+const btn = document.getElementById('btn');
+const model = document.getElementById('kolam3d');
+
+// Ukuran asli model
+const panjangAsli = 12;
+const lebarAsli = 4; // 1/3 dari panjang
+const kedalamanAwalAsli = 1;
+const kedalamanAkhirAsli = 5;
+
+btn.addEventListener('click', () => {
+  let p = parseFloat(document.getElementById('panjang').value);
+  let l = parseFloat(document.getElementById('lebar').value);
+  let dAwal = parseFloat(document.getElementById('kedalamanAwal').value);
+  let dAkhir = parseFloat(document.getElementById('kedalamanAkhir').value);
+
+  if(p <= 0 || l <= 0 || dAwal < 0 || dAkhir < 0) {
+    alert('Mohon masukkan nilai valid (>0)');
+    return;
+  }
+
+  model.style.display = 'block';
+
+  let scaleX = p / panjangAsli;
+  let scaleZ = l / lebarAsli;
+  let scaleY = Math.max(dAwal, dAkhir) / kedalamanAkhirAsli;
+
+  model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
+});
+
+function submitJawaban(){
+  const jawaban = document.getElementById('jawaban4').value.trim();
+  if(!jawaban){
+    alert("Jawaban harus diisi!");
+    return;
+  }
+
+  localStorage.setItem("soal4", jawaban);
+
+  const data = new URLSearchParams();
+  data.append("nama", localStorage.getItem("namaSiswa"));
+  data.append("soal1", localStorage.getItem("soal1"));
+  data.append("soal2", localStorage.getItem("soal2"));
+  data.append("soal3", localStorage.getItem("soal3"));
+  data.append("soal4", localStorage.getItem("soal4"));
+
+  fetch("https://script.google.com/macros/s/AKfycbywAdDlWaPPgxAspQTs0qM0vqS9uQ7-cM1vnXHou1MpWtk2ke58AsMolX3NfU4rgZ-mAw/exec", {
+    method: "POST",
+    body: data,
+    mode: "no-cors"
+  })
+  .then(() => {
+    localStorage.clear();
+    window.location.href = "selesai.html";
+  })
+  .catch(err => alert("Gagal simpan jawaban"));
+}
+</script>
+
+</body>
+</html>
