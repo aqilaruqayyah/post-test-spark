@@ -10,16 +10,15 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       font-family: 'Poppins', sans-serif;
       background-color: #cce7ff;
+      min-height: 100vh;
     }
 
     body {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      text-align: center;
       padding: 20px;
     }
 
@@ -30,6 +29,7 @@
       max-width: 700px;
       width: 100%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      text-align: center;
     }
 
     h2 { color: #6a5acd; margin-bottom: 10px; }
@@ -53,7 +53,7 @@
     }
 
     .input-container input {
-      width: 80px;
+      width: 100px;
       padding: 5px;
       border-radius: 5px;
       border: 1px solid #aaa;
@@ -75,7 +75,7 @@
 
     @media (max-width: 480px) {
       model-viewer { height: 200px; }
-      .input-container input { width: 60px; }
+      .input-container input { width: 80px; }
     }
   </style>
 </head>
@@ -83,12 +83,12 @@
 
 <div class="soal-box">
   <h2>Soal 4</h2>
-  <p>✨ Sebuah akuarium berbentuk balok dengan ukuran panjang 80 cm, lebar 50 cm, dan tinggi 60 cm. Akuarium tersebut akan dipasangi kaca di seluruh permukaannya. Berapa luas kaca minimal yang dibutuhkan?</p>
+  <p>✨ Sebuah akuarium berbentuk balok. Isi ukuran panjang, lebar, dan tinggi sendiri. Berapa luas kaca minimal yang dibutuhkan?</p>
 
   <div class="input-container">
-    <input type="number" id="panjang" placeholder="Panjang (cm)" value="80" min="0">
-    <input type="number" id="lebar" placeholder="Lebar (cm)" value="50" min="0">
-    <input type="number" id="tinggi" placeholder="Tinggi (cm)" value="60" min="0">
+    <input type="number" id="panjang" placeholder="Panjang (cm)" min="0">
+    <input type="number" id="lebar" placeholder="Lebar (cm)" min="0">
+    <input type="number" id="tinggi" placeholder="Tinggi (cm)" min="0">
     <button id="lihat3D">Lihat Model 3D</button>
   </div>
 
@@ -100,7 +100,7 @@
   </model-viewer>
 
   <div class="input-container">
-    <input type="number" id="jawaban" placeholder="Masukkan luas kaca (cm²)">
+    <input type="number" id="jawaban" placeholder="Masukkan luas kaca (cm²)" disabled>
   </div>
 
   <button id="selesai" disabled>Selesai</button>
@@ -122,20 +122,22 @@ btn3D.addEventListener('click', () => {
     return;
   }
 
+  // tampilkan model
   model.style.display = 'block';
+
+  // aktifkan input jawaban
+  jawabanInput.disabled = false;
 });
 
 jawabanInput.addEventListener('input', () => {
+  selesaiBtn.disabled = jawabanInput.value.trim() === "";
   if(jawabanInput.value.trim() !== ""){
     localStorage.setItem("soal4", jawabanInput.value.trim());
-    selesaiBtn.disabled = false;
-  } else {
-    selesaiBtn.disabled = true;
   }
 });
 
 selesaiBtn.addEventListener('click', () => {
-  // Nanti bisa submit semua jawaban sekaligus ke Apps Script
+  // Nanti di halaman submit, semua jawaban dikirim ke Apps Script sekaligus
   window.location.href = "submit.html"; 
 });
 </script>
