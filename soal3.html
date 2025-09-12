@@ -10,9 +10,9 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       font-family: 'Poppins', sans-serif;
       background-color: #cce7ff;
+      min-height: 100vh;
     }
 
     body {
@@ -20,7 +20,6 @@
       justify-content: center;
       align-items: flex-start;
       padding: 20px;
-      min-height: 100vh;
     }
 
     .soal-box {
@@ -31,6 +30,7 @@
       width: 100%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
       margin-bottom: 40px;
+      text-align: center;
     }
 
     h2 {
@@ -81,10 +81,11 @@
       border-radius: 8px;
       border: 1px solid #aaa;
       margin-top: 15px;
+      display: none;
     }
 
     button {
-      padding: 8px 15px;
+      padding: 10px 20px;
       background-color: #6a5acd;
       color: #fff;
       border: none;
@@ -101,6 +102,10 @@
 
     button:hover:enabled {
       background-color: #5841a1;
+    }
+
+    #lanjutSoal {
+      display: none;
     }
 
     @media (max-width: 480px) {
@@ -131,14 +136,14 @@
   </model-viewer>
 
   <input type="number" id="jawaban" placeholder="Masukkan volume air (m³)">
-  <button id="selesai" disabled>Selesai</button>
+  <button id="lanjutSoal">Lanjut ke Soal 4</button>
 </div>
 
 <script>
 const btn3D = document.getElementById('lihat3D');
 const model = document.getElementById('kolam3d');
 const jawabanInput = document.getElementById('jawaban');
-const selesaiBtn = document.getElementById('selesai');
+const lanjutBtn = document.getElementById('lanjutSoal');
 
 // Ukuran asli model
 const panjangAsli = 12;
@@ -175,12 +180,12 @@ btn3D.addEventListener('click', () => {
 
   model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
 
-  // Aktifkan input jawaban
-  jawabanInput.disabled = false;
-  selesaiBtn.disabled = false;
+  // Tampilkan input jawaban dan tombol lanjut
+  jawabanInput.style.display = 'block';
+  lanjutBtn.style.display = 'inline-block';
 });
 
-selesaiBtn.addEventListener('click', () => {
+lanjutBtn.addEventListener('click', () => {
   const jawaban = jawabanInput.value.trim();
   if(!jawaban){
     alert("Jawaban harus diisi!");
@@ -190,8 +195,8 @@ selesaiBtn.addEventListener('click', () => {
   // Simpan jawaban ke localStorage
   localStorage.setItem("soal3", jawaban);
 
-  // Redirect ke soal berikutnya atau kirim ke Apps Script nanti
-  alert("Jawaban tersimpan. Lanjut ke soal berikutnya!");
+  // Redirect ke soal 4
+  window.location.href = "soal4.html";
 });
 </script>
 
