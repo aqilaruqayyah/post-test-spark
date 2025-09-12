@@ -82,7 +82,7 @@
 
   <input type="text" id="jawaban2" placeholder="Tulis jawabanmu di sini">
   <br>
-  <button onclick="submitJawaban()">Kirim Jawaban</button>
+  <button onclick="submitJawaban()">Lanjut ke Soal 3</button>
 </div>
 
 <script>
@@ -96,25 +96,8 @@ function submitJawaban(){
   // Simpan jawaban soal2 di localStorage
   localStorage.setItem("soal2", jawaban);
 
-  // Ambil semua jawaban dan nama dari localStorage
-  const data = new URLSearchParams();
-  data.append("nama", localStorage.getItem("namaSiswa"));
-  data.append("soal1", localStorage.getItem("soal1"));
-  data.append("soal2", localStorage.getItem("soal2"));
-
-  // Ganti URL di bawah dengan Web App URL Apps Script kamu
-  fetch("PASTE_APPS_SCRIPT_URL_DISINI", {
-    method: "POST",
-    body: data,
-    mode: "no-cors"
-  })
-  .then(() => {
-    // Bersihkan localStorage setelah submit
-    localStorage.removeItem("soal2");
-    // Redirect ke soal berikutnya
-    window.location.href = "soal3.html";
-  })
-  .catch(err => alert("Gagal simpan jawaban"));
+  // Langsung redirect ke soal3.html
+  window.location.href = "soal3.html";
 }
 </script>
 
