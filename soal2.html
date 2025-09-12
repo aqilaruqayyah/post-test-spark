@@ -2,23 +2,34 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Soal 2 - Post-Test Spark</title>
+  <title>Post-Test Soal 2 - Kardus Kubus</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body {
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: 'Poppins', sans-serif;
-      background: #cce7ff;
+      background-color: #cce7ff;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
       padding: 20px;
-      margin: 0;
+      min-height: 100vh;
     }
 
     .soal-box {
       background: #ffffffcc;
-      padding: 20px;
       border-radius: 20px;
+      padding: 20px;
       max-width: 700px;
-      margin: auto;
+      width: 100%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
@@ -34,17 +45,12 @@
 
     model-viewer {
       width: 100%;
-      max-width: 700px;
       height: 300px;
       border-radius: 15px;
       margin: 15px 0;
       background: #f1f1f1;
-    }
-
-    @media (max-width: 480px) {
-      model-viewer {
-        height: 200px;
-      }
+      display: none;
+      transform-origin: top left;
     }
 
     input, button {
@@ -57,48 +63,69 @@
     }
 
     button {
-      background: #4CAF50;
-      color: white;
+      background: #6a5acd;
+      color: #fff;
       border: none;
       cursor: pointer;
       font-weight: 600;
     }
 
-    button:hover { background: #45a049; }
+    button:hover { background: #5841a1; }
+
+    @media (max-width: 480px) {
+      model-viewer { height: 200px; }
+    }
   </style>
 </head>
 <body>
 
 <div class="soal-box">
   <h2>Soal 2</h2>
-  <p>✨ Sebuah kardus penyimpanan berbentuk kubus memiliki panjang rusuk 40 cm. Di dalam kardus tersebut akan dibuat ruang kosong berbentuk balok dengan ukuran 40 cm × 20 cm × 20 cm untuk menyimpan barang khusus. Berapa sisa volume ruang dalam kardus setelah bagian balok tersebut diambil?</p>
+  <p>✨ Sebuah kardus penyimpanan berbentuk kubus memiliki panjang rusuk 40 cm. Di dalam kardus tersebut akan dibuat ruang kosong berbentuk balok dengan ukuran 40 × 20 × 20 cm untuk menyimpan barang khusus. Berapa sisa volume ruang dalam kardus setelah bagian balok tersebut diambil?</p>
 
-  <model-viewer 
-      src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/kubbal.glb" 
-      alt="Kardus Kubus dengan Ruang Balok 3D" 
-      ar 
-      camera-controls>
+  <div class="input-container">
+    <div><label>Volume kardus (cm³):</label><input type="number" id="volKardus" min="0" step="0.1"></div>
+    <div><label>Volume balok (cm³):</label><input type="number" id="volBalok" min="0" step="0.1"></div>
+    <button id="lihat3D">Lihat Model 3D</button>
+  </div>
+
+  <model-viewer id="kubbal3d"
+                src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/kubbal.glb"
+                alt="Kardus Kubus dengan Ruang Balok 3D"
+                ar
+                camera-controls>
   </model-viewer>
 
-  <input type="text" id="jawaban2" placeholder="Tulis jawabanmu di sini">
-  <br>
-  <button onclick="submitJawaban()">Lanjut ke Soal 3</button>
+  <button id="nextSoal" style="margin-top:10px; display:none;">Lanjut ke Soal 3</button>
 </div>
 
 <script>
-function submitJawaban(){
-  const jawaban = document.getElementById('jawaban2').value.trim();
-  if(!jawaban){
-    alert("Jawaban harus diisi!");
+const btn3D = document.getElementById('lihat3D');
+const model = document.getElementById('kubbal3d');
+const nextBtn = document.getElementById('nextSoal');
+
+btn3D.addEventListener('click', () => {
+  const vKardus = parseFloat(document.getElementById('volKardus').value);
+  const vBalok = parseFloat(document.getElementById('volBalok').value);
+
+  if(isNaN(vKardus) || isNaN(vBalok) || vKardus <= 0 || vBalok <= 0){
+    alert("Mohon masukkan nilai valid (>0)");
     return;
   }
 
-  // Simpan jawaban soal2 di localStorage
-  localStorage.setItem("soal2", jawaban);
+  // Tampilkan model
+  model.style.display = 'block';
 
-  // Langsung redirect ke soal3.html
+  // Simpan jawaban di localStorage
+  localStorage.setItem("soal2", `${vKardus},${vBalok}`);
+
+  // Tampilkan tombol lanjut
+  nextBtn.style.display = 'inline-block';
+});
+
+nextBtn.addEventListener('click', () => {
   window.location.href = "soal3.html";
-}
+});
 </script>
 
 </body>
