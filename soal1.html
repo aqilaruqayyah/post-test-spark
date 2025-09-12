@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Soal 1 - Post-Test Spark</title>
+  <title>Soal 1 - Latihan Soal</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
@@ -39,109 +39,64 @@
       border-radius: 15px;
       margin: 15px 0;
       background: #f1f1f1;
-      display: none;
     }
 
-    .input-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
+    @media (max-width: 480px) {
+      model-viewer {
+        height: 200px;
+      }
     }
 
-    .input-container label {
-      font-weight: 600;
-      margin-right: 5px;
-    }
-
-    .input-container input {
-      width: 60px;
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #aaa;
+    input, button {
+      width: 90%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
     }
 
     button {
-      padding: 8px 15px;
-      background-color: #6a5acd;
-      color: #fff;
+      background: #4CAF50;
+      color: white;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
     }
 
-    button:hover {
-      background-color: #5841a1;
-    }
+    button:hover { background: #45a049; }
   </style>
 </head>
 <body>
 
 <div class="soal-box">
   <h2>Soal 1</h2>
-  <p>✨ Sebuah bak air panjangnya 2 m, lebarnya 1,5 m, dan tingginya 1 m. Jika bak diisi penuh air, maka volume bak itu adalah... (Masukkan ukuran untuk menampilkan model 3D!)</p>
+  <p>✨ Sebuah akuarium berbentuk balok dengan panjang 80 cm, lebar 50 cm, dan tinggi 60 cm. Akuarium tersebut akan dipasangi kaca di seluruh permukaannya. Berapa luas kaca minimal yang dibutuhkan?</p>
 
-  <div class="input-container">
-    <div><label>Panjang (m):</label><input type="number" id="panjang" value="0" min="0" step="0.1"></div>
-    <div><label>Lebar (m):</label><input type="number" id="lebar" value="0" min="0" step="0.1"></div>
-    <div><label>Tinggi (m):</label><input type="number" id="tinggi" value="0" min="0" step="0.1"></div>
-    <button id="btn">Lihat Model 3D</button>
-  </div>
-
-  <model-viewer id="bak3d"
-                src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/tub.glb"
-                alt="Bak Air 3D"
-                ar
-                camera-controls>
+  <model-viewer 
+      src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/aquarium.glb" 
+      alt="Akuarium 3D" 
+      ar 
+      camera-controls>
   </model-viewer>
 
   <input type="text" id="jawaban1" placeholder="Tulis jawabanmu di sini">
-  <br><br>
+  <br>
   <button onclick="lanjut()">Lanjut ke Soal 2</button>
 </div>
 
 <script>
-  const btn = document.getElementById('btn');
-  const model = document.getElementById('bak3d');
-
-  const panjangAsli = 2;
-  const lebarAsli = 1.5;
-  const tinggiAsli = 1;
-
-  btn.addEventListener('click', () => {
-    let p = parseFloat(document.getElementById('panjang').value);
-    let l = parseFloat(document.getElementById('lebar').value);
-    let t = parseFloat(document.getElementById('tinggi').value);
-
-    if(p <= 0 || l <= 0 || t <= 0) {
-      alert('Mohon masukkan nilai valid (>0)');
-      return;
-    }
-
-    model.style.display = 'block';
-
-    let scaleX = p / panjangAsli;
-    let scaleY = t / tinggiAsli;
-    let scaleZ = l / lebarAsli;
-
-    model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
-  });
-
-  function lanjut(){
-    const jawaban = document.getElementById('jawaban1').value.trim();
-    if(!jawaban){
-      alert("Jawaban harus diisi!");
-      return;
-    }
-
-    // Simpan jawaban soal1 di localStorage
-    localStorage.setItem("soal1_post", jawaban);
-
-    // Redirect ke soal2 post-test
-    window.location.href = "soal2.html";
+function lanjut(){
+  const jawaban = document.getElementById('jawaban1').value.trim();
+  if(!jawaban){
+    alert("Jawaban harus diisi!");
+    return;
   }
+  // Simpan jawaban soal1 di localStorage
+  localStorage.setItem("soal1", jawaban);
+  // Redirect ke soal2.html
+  window.location.href = "soal2.html";
+}
 </script>
 
 </body>
