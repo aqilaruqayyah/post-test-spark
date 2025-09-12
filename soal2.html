@@ -13,9 +13,12 @@
       height: 100%;
       font-family: 'Poppins', sans-serif;
       background-color: #cce7ff;
+    }
+
+    body {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       text-align: center;
       padding: 20px;
     }
@@ -49,15 +52,12 @@
     }
 
     .input-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
+      margin: 15px 0;
     }
 
     .input-container input {
-      width: 200px;
+      width: 90%;
+      max-width: 300px;
       padding: 8px;
       border-radius: 5px;
       border: 1px solid #aaa;
@@ -65,22 +65,23 @@
     }
 
     button {
-      padding: 8px 15px;
+      padding: 10px 20px;
       background-color: #6a5acd;
       color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
+      margin-top: 10px;
     }
 
-    button:hover {
-      background-color: #5841a1;
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
 
     @media (max-width: 480px) {
       model-viewer { height: 200px; }
-      .input-container input { width: 150px; }
     }
   </style>
 </head>
@@ -97,24 +98,24 @@
                 camera-controls>
   </model-viewer>
 
-  <div class="input-container" style="margin-top:15px;">
+  <div class="input-container">
     <input type="number" id="jawaban" placeholder="Masukkan jawaban sisa volume (cm³)">
   </div>
 
-  <button id="nextSoal" style="margin-top:10px; display:none;">Lanjut ke Soal 3</button>
+  <button id="nextSoal" disabled>Lanjut ke Soal 3</button>
 </div>
 
 <script>
 const jawabanInput = document.getElementById('jawaban');
 const nextBtn = document.getElementById('nextSoal');
 
-// Tampilkan tombol lanjut saat jawaban diisi
+// Aktifkan tombol lanjut saat jawaban diisi
 jawabanInput.addEventListener('input', () => {
   if(jawabanInput.value.trim() !== ""){
     localStorage.setItem("soal2", jawabanInput.value.trim());
-    nextBtn.style.display = 'inline-block';
+    nextBtn.disabled = false;
   } else {
-    nextBtn.style.display = 'none';
+    nextBtn.disabled = true;
   }
 });
 
