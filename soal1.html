@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Soal 1 - Post-Test Spark</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #cce7ff;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .soal-box {
+      background: #ffffffcc;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #6a5acd;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 700px;
+      height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      background: #f1f1f1;
+      display: none;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .input-container label {
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .input-container input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #5841a1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="soal-box">
+  <h2>Soal 1</h2>
+  <p>✨ Sebuah bak air panjangnya 2 m, lebarnya 1,5 m, dan tingginya 1 m. Masukkan ukuran yang sesuai untuk menampilkan model 3D!</p>
+
+  <div class="input-container">
+    <div><label>Panjang (m):</label><input type="number" id="panjang" value="0" min="0" step="0.1"></div>
+    <div><label>Lebar (m):</label><input type="number" id="lebar" value="0" min="0" step="0.1"></div>
+    <div><label>Tinggi (m):</label><input type="number" id="tinggi" value="0" min="0" step="0.1"></div>
+    <button id="btn">Lihat Model 3D</button>
+  </div>
+
+  <model-viewer id="bak3d"
+                src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/tub.glb"
+                alt="Bak Air 3D"
+                ar
+                camera-controls>
+  </model-viewer>
+
+  <input type="text" id="jawaban1" placeholder="Tulis jawabanmu di sini">
+  <br><br>
+  <button onclick="lanjut()">Lanjut ke Soal 2</button>
+</div>
+
+<script>
+  const btn = document.getElementById('btn');
+  const model = document.getElementById('bak3d');
+
+  const panjangAsli = 2;
+  const lebarAsli = 1.5;
+  const tinggiAsli = 1;
+
+  btn.addEventListener('click', () => {
+    let p = parseFloat(document.getElementById('panjang').value);
+    let l = parseFloat(document.getElementById('lebar').value);
+    let t = parseFloat(document.getElementById('tinggi').value);
+
+    if(p <= 0 || l <= 0 || t <= 0) {
+      alert('Mohon masukkan nilai valid (>0)');
+      return;
+    }
+
+    model.style.display = 'block';
+
+    let scaleX = p / panjangAsli;
+    let scaleY = t / tinggiAsli;
+    let scaleZ = l / lebarAsli;
+
+    model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
+  });
+
+  function lanjut(){
+    const jawaban = document.getElementById('jawaban1').value.trim();
+    if(!jawaban){
+      alert("Jawaban harus diisi!");
+      return;
+    }
+
+    // Simpan jawaban soal1 di localStorage
+    localStorage.setItem("soal1_post", jawaban);
+
+    // Redirect ke soal2 post-test
+    window.location.href = "soal2_post.html";
+  }
+</script>
+
+</body>
+</html>
