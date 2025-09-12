@@ -13,15 +13,11 @@
       height: 100%;
       font-family: 'Poppins', sans-serif;
       background-color: #cce7ff;
-    }
-
-    body {
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
       padding: 20px;
-      min-height: 100vh;
     }
 
     .soal-box {
@@ -53,27 +49,43 @@
       transform-origin: top left;
     }
 
-    input, button {
-      width: 90%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
+    .input-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .input-container label {
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .input-container input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
     }
 
     button {
-      background: #6a5acd;
+      padding: 8px 15px;
+      background-color: #6a5acd;
       color: #fff;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
     }
 
-    button:hover { background: #5841a1; }
+    button:hover {
+      background-color: #5841a1;
+    }
 
     @media (max-width: 480px) {
       model-viewer { height: 200px; }
+      .input-container input { width: 50px; }
     }
   </style>
 </head>
@@ -84,43 +96,65 @@
   <p>✨ Sebuah kardus penyimpanan berbentuk kubus memiliki panjang rusuk 40 cm. Di dalam kardus tersebut akan dibuat ruang kosong berbentuk balok dengan ukuran 40 × 20 × 20 cm untuk menyimpan barang khusus. Berapa sisa volume ruang dalam kardus setelah bagian balok tersebut diambil?</p>
 
   <div class="input-container">
-    <div><label>Volume kardus (cm³):</label><input type="number" id="volKardus" min="0" step="0.1"></div>
-    <div><label>Volume balok (cm³):</label><input type="number" id="volBalok" min="0" step="0.1"></div>
+    <div><label>Panjang (cm):</label><input type="number" id="panjang" value="40" min="0"></div>
+    <div><label>Lebar (cm):</label><input type="number" id="lebar" value="40" min="0"></div>
+    <div><label>Tinggi (cm):</label><input type="number" id="tinggi" value="40" min="0"></div>
     <button id="lihat3D">Lihat Model 3D</button>
   </div>
 
-  <model-viewer id="kubbal3d"
+  <model-viewer id="kardus3d"
                 src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/kubbal.glb"
-                alt="Kardus Kubus dengan Ruang Balok 3D"
+                alt="Kardus Kubus 3D"
                 ar
                 camera-controls>
   </model-viewer>
+
+  <div class="input-container" style="margin-top:15px;">
+    <input type="number" id="jawaban" placeholder="Masukkan jawaban sisa volume (cm³)">
+  </div>
 
   <button id="nextSoal" style="margin-top:10px; display:none;">Lanjut ke Soal 3</button>
 </div>
 
 <script>
 const btn3D = document.getElementById('lihat3D');
-const model = document.getElementById('kubbal3d');
+const model = document.getElementById('kardus3d');
 const nextBtn = document.getElementById('nextSoal');
+const jawabanInput = document.getElementById('jawaban');
+
+// Ukuran asli model (kardus 40x40x40)
+const panjangAsli = 40;
+const lebarAsli = 40;
+const tinggiAsli = 40;
 
 btn3D.addEventListener('click', () => {
-  const vKardus = parseFloat(document.getElementById('volKardus').value);
-  const vBalok = parseFloat(document.getElementById('volBalok').value);
+  const p = parseFloat(document.getElementById('panjang').value);
+  const l = parseFloat(document.getElementById('lebar').value);
+  const t = parseFloat(document.getElementById('tinggi').value);
 
-  if(isNaN(vKardus) || isNaN(vBalok) || vKardus <= 0 || vBalok <= 0){
+  if(p <= 0 || l <= 0 || t <= 0){
     alert("Mohon masukkan nilai valid (>0)");
     return;
   }
 
-  // Tampilkan model
   model.style.display = 'block';
 
-  // Simpan jawaban di localStorage
-  localStorage.setItem("soal2", `${vKardus},${vBalok}`);
+  // Skala per sumbu
+  const scaleX = p / panjangAsli;
+  const scaleY = t / tinggiAsli;
+  const scaleZ = l / lebarAsli;
 
-  // Tampilkan tombol lanjut
-  nextBtn.style.display = 'inline-block';
+  model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
+});
+
+// Simpan jawaban dan tampilkan tombol lanjut
+jawabanInput.addEventListener('input', () => {
+  if(jawabanInput.value.trim() !== ""){
+    localStorage.setItem("soal2", jawabanInput.value.trim());
+    nextBtn.style.display = 'inline-block';
+  } else {
+    nextBtn.style.display = 'none';
+  }
 });
 
 nextBtn.addEventListener('click', () => {
