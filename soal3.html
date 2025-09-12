@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Post-Test Soal 3 - Kolam Renang</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #cce7ff;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .soal-box {
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #6a5acd;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      background: #f1f1f1;
+      display: none;
+      transform-origin: top left;
+    }
+
+    input, button {
+      width: 90%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #6a5acd;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover { background: #5841a1; }
+
+    @media (max-width: 480px) {
+      model-viewer { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="soal-box">
+  <h2>Soal 3</h2>
+  <p>✨ Suatu kolam renang diisi penuh air. Panjang 12 m, lebar 1/3 dari panjang, kedalaman awal 1 m, kedalaman akhir 5 m. Hitung volume air pada kolam tersebut.</p>
+
+  <div class="input-container">
+    <div><label>Panjang (m):</label><input type="number" id="panjang" min="0" step="0.1" value="12"></div>
+    <div><label>Lebar (m):</label><input type="number" id="lebar" min="0" step="0.1" value="4"></div>
+    <div><label>Kedalaman awal (m):</label><input type="number" id="kedalamanAwal" min="0" step="0.1" value="1"></div>
+    <div><label>Kedalaman akhir (m):</label><input type="number" id="kedalamanAkhir" min="0" step="0.1" value="5"></div>
+    <button id="lihat3D">Lihat Model 3D</button>
+  </div>
+
+  <model-viewer id="kolam3d"
+                src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/swimming_pool_343.glb"
+                alt="Kolam Renang 3D"
+                ar
+                camera-controls>
+  </model-viewer>
+
+  <button id="nextSoal" style="margin-top:10px; display:none;">Lanjut ke Soal 4</button>
+</div>
+
+<script>
+const btn3D = document.getElementById('lihat3D');
+const model = document.getElementById('kolam3d');
+const nextBtn = document.getElementById('nextSoal');
+
+btn3D.addEventListener('click', () => {
+  const p = parseFloat(document.getElementById('panjang').value);
+  const l = parseFloat(document.getElementById('lebar').value);
+  const dAwal = parseFloat(document.getElementById('kedalamanAwal').value);
+  const dAkhir = parseFloat(document.getElementById('kedalamanAkhir').value);
+
+  if(isNaN(p) || isNaN(l) || isNaN(dAwal) || isNaN(dAkhir) || p<=0 || l<=0 || dAwal<0 || dAkhir<0){
+    alert("Mohon masukkan nilai valid (>0)");
+    return;
+  }
+
+  // Tampilkan model 3D
+  model.style.display = 'block';
+
+  // Simpan jawaban di localStorage (panjang, lebar, kedalaman awal & akhir)
+  localStorage.setItem("soal3", JSON.stringify({p,l,dAwal,dAkhir}));
+
+  // Tampilkan tombol lanjut
+  nextBtn.style.display = 'inline-block';
+});
+
+nextBtn.addEventListener('click', () => {
+  window.location.href = "soal4.html";
+});
+</script>
+
+</body>
+</html>
