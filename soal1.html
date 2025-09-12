@@ -1,24 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Post-Test Soal 1 - Bak Air</title>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-html, body { margin:0; padding:0; font-family:'Poppins', sans-serif; background:#cce7ff;}
-body { display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; min-height:100vh;}
-.soal-box { background:#ffffffcc; border-radius:20px; padding:20px; max-width:700px; width:100%; box-shadow:0 8px 25px rgba(0,0,0,0.2);}
-h2 { color:#6a5acd; margin-bottom:10px; }
-p { font-size:1.1em; margin-bottom:15px; }
-model-viewer { width:100%; height:300px; border-radius:15px; margin:15px 0; background:#f1f1f1; display:none; transform-origin:top left;}
-.input-container { display:flex; flex-direction:column; gap:10px; margin-bottom:15px; }
-.input-container label { font-weight:600; margin-bottom:3px;}
-.input-container input { padding:5px; border-radius:5px; border:1px solid #aaa; width:100%; }
-button { padding:8px 15px; background-color:#6a5acd; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
-button:hover { background-color:#5841a1;}
-@media(max-width:480px){ model-viewer{height:200px;} }
-</style>
+  <meta charset="UTF-8">
+  <title>Post-Test Soal 1 - Bak Air</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #cce7ff;
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .soal-box {
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #6a5acd;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      background: #f1f1f1;
+      display: none;
+      transform-origin: top left;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .input-container label {
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .input-container input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    .jawaban-container {
+      margin-top: 10px;
+    }
+
+    .jawaban-container input {
+      width: 80%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin-top: 10px;
+      background-color: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #5841a1;
+    }
+
+    @media (max-width: 480px) {
+      model-viewer {
+        height: 200px;
+      }
+      .input-container input {
+        width: 50px;
+      }
+      .jawaban-container input {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -26,26 +118,15 @@ button:hover { background-color:#5841a1;}
   <h2>Soal 1</h2>
   <p>✨ Sebuah bak air panjangnya 2 m, lebarnya 1,5 m, dan tingginya 1 m. Jika bak diisi penuh air, maka volume bak itu adalah ....</p>
 
+  <!-- Input ukuran untuk model -->
   <div class="input-container">
-    <div>
-      <label>Panjang (m):</label>
-      <input type="number" id="panjang" min="0" step="0.1" value="2">
-    </div>
-    <div>
-      <label>Lebar (m):</label>
-      <input type="number" id="lebar" min="0" step="0.1" value="1.5">
-    </div>
-    <div>
-      <label>Tinggi (m):</label>
-      <input type="number" id="tinggi" min="0" step="0.1" value="1">
-    </div>
-    <div>
-      <label>Jawaban Volume (m³):</label>
-      <input type="number" id="jawaban" placeholder="Isi jawabanmu di sini" step="0.01">
-    </div>
+    <div><label>Panjang (m):</label><input type="number" id="panjang" min="0" step="0.1" value="0"></div>
+    <div><label>Lebar (m):</label><input type="number" id="lebar" min="0" step="0.1" value="0"></div>
+    <div><label>Tinggi (m):</label><input type="number" id="tinggi" min="0" step="0.1" value="0"></div>
     <button id="lihat3D">Lihat Model 3D</button>
   </div>
 
+  <!-- Model Viewer -->
   <model-viewer id="bak3d"
                 src="https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/tub.glb"
                 alt="Bak Air 3D"
@@ -53,48 +134,65 @@ button:hover { background-color:#5841a1;}
                 camera-controls>
   </model-viewer>
 
-  <button id="kirimLanjut" style="margin-top:10px; display:none;">Kirim Jawaban & Lanjut ke Soal 2</button>
+  <!-- Input jawaban -->
+  <div class="jawaban-container">
+    <input type="text" id="jawaban" placeholder="Tulis jawabanmu di sini">
+  </div>
+  <button id="nextSoal">Simpan Jawaban & Lanjut ke Soal 2</button>
 </div>
 
 <script>
 const btn3D = document.getElementById('lihat3D');
 const model = document.getElementById('bak3d');
-const nextBtn = document.getElementById('kirimLanjut');
+const nextBtn = document.getElementById('nextSoal');
 
-const panjangAsli = 2, lebarAsli=1.5, tinggiAsli=1;
-const frameWidth=700, frameHeight=300;
+// Ukuran asli model
+const panjangAsli = 2;
+const lebarAsli = 1.5;
+const tinggiAsli = 1;
 
-btn3D.addEventListener('click', ()=>{
+// Frame referensi
+const frameWidth = 700;
+const frameHeight = 300;
+
+btn3D.addEventListener('click', () => {
   const p = parseFloat(document.getElementById('panjang').value);
   const l = parseFloat(document.getElementById('lebar').value);
   const t = parseFloat(document.getElementById('tinggi').value);
 
-  if(p<=0||l<=0||t<=0){ alert("Mohon masukkan nilai valid (>0)"); return; }
+  if(p <= 0 || l <= 0 || t <= 0){
+    alert("Mohon masukkan nilai valid (>0)");
+    return;
+  }
 
-  model.style.display='block';
+  // Tampilkan model
+  model.style.display = 'block';
 
-  let scaleX=p/panjangAsli;
-  let scaleY=t/tinggiAsli;
-  let scaleZ=l/lebarAsli;
+  // Skala per dimensi
+  let scaleX = p / panjangAsli;
+  let scaleY = t / tinggiAsli;
+  let scaleZ = l / lebarAsli;
 
-  scaleX = Math.min(scaleX, frameWidth/panjangAsli);
-  scaleY = Math.min(scaleY, frameHeight/tinggiAsli);
-  scaleZ = Math.min(scaleZ, frameWidth/lebarAsli);
+  scaleX = Math.min(scaleX, frameWidth / panjangAsli);
+  scaleY = Math.min(scaleY, frameHeight / tinggiAsli);
+  scaleZ = Math.min(scaleZ, frameWidth / lebarAsli);
 
-  model.style.transform = `scale3d(${scaleX},${scaleY},${scaleZ})`;
+  model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
 
-  nextBtn.style.display='inline-block';
+  // Simpan ukuran ke localStorage
+  localStorage.setItem("soal1_ukuran", `${p},${l},${t}`);
 });
 
-nextBtn.addEventListener('click', ()=>{
+// Simpan jawaban dan lanjut ke soal 2
+nextBtn.addEventListener('click', () => {
   const jawaban = document.getElementById('jawaban').value.trim();
-  if(!jawaban){ alert("Jawaban harus diisi!"); return; }
+  if(!jawaban){
+    alert("Jawaban harus diisi!");
+    return;
+  }
 
-  // simpan ke localStorage
-  localStorage.setItem("soal1", jawaban);
-
-  // redirect ke soal2
-  window.location.href="soal2.html";
+  localStorage.setItem("soal1_jawaban", jawaban);
+  window.location.href = "soal2.html"; // redirect ke soal 2
 });
 </script>
 
