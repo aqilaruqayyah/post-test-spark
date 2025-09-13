@@ -6,7 +6,6 @@
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
     html, body { margin:0; padding:0; font-family:'Poppins',sans-serif; background:#cce7ff; min-height:100vh; }
     body { display:flex; justify-content:center; align-items:flex-start; padding:20px; }
     .soal-box { background:#ffffffcc; border-radius:20px; padding:20px; max-width:700px; width:100%; box-shadow:0 8px 25px rgba(0,0,0,0.2); text-align:center; position:relative; }
@@ -99,10 +98,14 @@ btn3D.addEventListener('click', () => {
   const l = parseFloat(document.getElementById('lebar').value);
   const t = parseFloat(document.getElementById('tinggi').value);
 
-  if(p <=0 || l <=0 || t <=0){ alert("Masukkan nilai valid (>0)"); return; }
+  if(p <=0 || l <=0 || t <=0){ 
+    alert("Masukkan nilai valid (>0)"); 
+    return; 
+  }
 
   model.style.display = 'block';
   jawabanInput.disabled = false;
+  selesaiBtn.disabled = jawabanInput.value.trim() === "";
 });
 
 // Simpan jawaban ke localStorage
@@ -113,7 +116,7 @@ jawabanInput.addEventListener('input', () => {
   }
 });
 
-// Selesai -> kirim semua jawaban ke Apps Script dan redirect
+// Selesai -> kirim semua jawaban ke Apps Script dan redirect ke selesai.html
 selesaiBtn.addEventListener('click', () => {
   const nama = localStorage.getItem("namaSiswa") || "Anonim";
   const data = {
@@ -132,7 +135,7 @@ selesaiBtn.addEventListener('click', () => {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-    window.location.href = "selesai.html";
+    window.location.href = "selesai.html"; // redirect ke halaman selesai
   })
   .catch(err => {
     console.error(err);
