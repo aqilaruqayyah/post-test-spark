@@ -1,69 +1,69 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Submit Jawaban Post-Test</title>
-  <style>
-    body{margin:0;padding:0;font-family:Poppins,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:#cce7ff;text-align:center;}
-    .box{background:#ffffffcc;padding:30px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 8px 25px rgba(0,0,0,0.2);}
-    button{padding:10px 20px;background-color:#6a5acd;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-top:20px;}
-    button:hover{background-color:#5841a1;}
-    #status{margin-top:15px;font-weight:600;}
-    #homeBtn{display:none;background-color:#4CAF50;}
-    #homeBtn:hover{background-color:#45a049;}
-  </style>
+<meta charset="UTF-8">
+<title>Submit Jawaban Post-Test</title>
+<style>
+body{margin:0;padding:0;font-family:Poppins,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:#cce7ff;text-align:center;}
+.box{background:#ffffffcc;padding:30px;border-radius:20px;max-width:500px;width:100%;box-shadow:0 8px 25px rgba(0,0,0,0.2);}
+button{padding:10px 20px;background-color:#6a5acd;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-top:20px;}
+button:hover{background-color:#5841a1;}
+#status{margin-top:15px;font-weight:600;}
+#homeBtn{display:none;background-color:#4CAF50;}
+#homeBtn:hover{background-color:#45a049;}
+</style>
 </head>
 <body>
-  <div class="box">
-    <h2>Submit Jawaban Post-Test</h2>
-    <p>Tekan tombol di bawah untuk mengirim semua jawaban.</p>
-    <button id="submitBtn">Kirim Jawaban</button>
-    <div id="status"></div>
-    <button id="homeBtn" onclick="window.location.href='index.html'">Kembali ke Halaman Awal</button>
-  </div>
+<div class="box">
+  <h2>Submit Jawaban Post-Test</h2>
+  <p>Tekan tombol di bawah untuk mengirim semua jawaban.</p>
+  <button id="submitBtn">Kirim Jawaban</button>
+  <div id="status"></div>
+  <button id="homeBtn" onclick="window.location.href='index.html'">Kembali ke Halaman Awal</button>
+</div>
 
-  <script>
-    const submitBtn = document.getElementById('submitBtn');
-    const statusDiv = document.getElementById('status');
-    const homeBtn = document.getElementById('homeBtn');
+<script>
+const submitBtn = document.getElementById('submitBtn');
+const statusDiv = document.getElementById('status');
+const homeBtn = document.getElementById('homeBtn');
 
-    // Ganti dengan URL Web App yang kamu deploy
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHSMRWDDzpaYh4r7EN3JqbJrgDnpkV31nCgqsfjQ45rhmEs5VqqTGw7GFqICHoTkIa7g/exec";
+// Ganti dengan Web App URL yang sudah kamu deploy
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyO1U-sEt9XkaRE1VEjnX0mU-1W6BC4rf6gJmAJ-vKmkBYvD4NDuSR0-hsEG7ajoe5puQ/exec";
 
-    submitBtn.addEventListener('click', () => {
-      const nama = localStorage.getItem("namaSiswa") || "Anonim";
-      const soal1 = localStorage.getItem("soal1") || "";
-      const soal2 = localStorage.getItem("soal2") || "";
-      const soal3 = localStorage.getItem("soal3") || "";
-      const soal4 = localStorage.getItem("soal4") || "";
+submitBtn.addEventListener('click', () => {
+  const nama = localStorage.getItem("namaSiswa") || "Anonim";
+  const soal1 = localStorage.getItem("soal1") || "";
+  const soal2 = localStorage.getItem("soal2") || "";
+  const soal3 = localStorage.getItem("soal3") || "";
+  const soal4 = localStorage.getItem("soal4") || "";
 
-      const data = new URLSearchParams();
-      data.append("nama", nama);
-      data.append("soal1", soal1);
-      data.append("soal2", soal2);
-      data.append("soal3", soal3);
-      data.append("soal4", soal4);
+  const data = new URLSearchParams();
+  data.append("nama", nama);
+  data.append("soal1", soal1);
+  data.append("soal2", soal2);
+  data.append("soal3", soal3);
+  data.append("soal4", soal4);
 
-      fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        body: data
-      })
-      .then(res => res.json())
-      .then(result => {
-        if (result.status === "success") {
-          statusDiv.textContent = "Jawaban berhasil dikirim! Terima kasih.";
-          localStorage.clear();
-          submitBtn.disabled = true;
-          homeBtn.style.display = "inline-block";
-        } else {
-          statusDiv.textContent = "Gagal: " + (result.message || "Error tak diketahui");
-        }
-      })
-      .catch(err => {
-        statusDiv.textContent = "Error koneksi. Coba lagi.";
-        console.error(err);
-      });
-    });
-  </script>
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    body: data
+  })
+  .then(res => res.json())
+  .then(result => {
+    if(result.status === "success") {
+      statusDiv.textContent = "Jawaban berhasil dikirim! Terima kasih.";
+      localStorage.clear();
+      submitBtn.disabled = true;
+      homeBtn.style.display = "inline-block";
+    } else {
+      statusDiv.textContent = "Gagal: " + (result.message || "Error tak diketahui");
+    }
+  })
+  .catch(err => {
+    statusDiv.textContent = "Error koneksi. Coba lagi.";
+    console.error("Fetch error:", err);
+  });
+});
+</script>
 </body>
 </html>
