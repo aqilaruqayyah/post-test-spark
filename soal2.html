@@ -21,6 +21,8 @@
       align-items: flex-start;
       text-align: center;
       padding: 20px;
+      box-sizing: border-box;
+      min-height: 100vh;
     }
 
     .soal-box {
@@ -30,6 +32,8 @@
       max-width: 700px;
       width: 100%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1;
     }
 
     h2 {
@@ -80,8 +84,88 @@
       cursor: not-allowed;
     }
 
+    /* Chatbot */
+    #chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      max-height: 400px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      z-index: 9999;
+      transition: transform 0.3s;
+      transform: translateY(100%);
+    }
+
+    #chatbot.open {
+      transform: translateY(0);
+    }
+
+    #chatbot-header {
+      background: #6a5acd;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 0.9em;
+    }
+
+    #chatbot-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    #chatbot-input input {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      outline: none;
+      font-size: 0.9em;
+    }
+
+    #chatbot-input button {
+      padding: 8px 12px;
+      border: none;
+      background: #6a5acd;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #6a5acd;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
     @media (max-width: 480px) {
       model-viewer { height: 200px; }
+      #chatbot { width: 90%; right: 5%; }
     }
   </style>
 </head>
@@ -105,6 +189,19 @@
   <button id="nextSoal" disabled>Lanjut ke Soal 3</button>
 </div>
 
+<!-- Chatbot -->
+<div id="chatbot">
+  <div id="chatbot-header">
+    Chatbot <span id="close-chat">×</span>
+  </div>
+  <div id="chatbot-messages"></div>
+  <div id="chatbot-input">
+    <input type="text" id="chat-input" placeholder="Ketik pesan...">
+    <button id="send-chat">Kirim</button>
+  </div>
+</div>
+<div id="chatbot-toggle">💬</div>
+
 <script>
 const jawabanInput = document.getElementById('jawaban');
 const nextBtn = document.getElementById('nextSoal');
@@ -121,6 +218,38 @@ jawabanInput.addEventListener('input', () => {
 
 nextBtn.addEventListener('click', () => {
   window.location.href = "soal3.html";
+});
+
+// Chatbot
+const chatbot = document.getElementById('chatbot');
+const toggle = document.getElementById('chatbot-toggle');
+const closeChat = document.getElementById('close-chat');
+const messages = document.getElementById('chatbot-messages');
+const chatInput = document.getElementById('chat-input');
+const sendChat = document.getElementById('send-chat');
+
+toggle.addEventListener('click', () => { chatbot.classList.toggle('open'); });
+closeChat.addEventListener('click', () => { chatbot.classList.remove('open'); });
+
+sendChat.addEventListener('click', () => {
+  const text = chatInput.value.trim();
+  if(text){
+    const msg = document.createElement('div');
+    msg.textContent = `Kamu: ${text}`;
+    messages.appendChild(msg);
+    chatInput.value = '';
+
+    // Respon sederhana
+    const botMsg = document.createElement('div');
+    botMsg.textContent = `Bot: Maaf, saya belum bisa membalas.`;
+    messages.appendChild(botMsg);
+
+    messages.scrollTop = messages.scrollHeight;
+  }
+});
+
+chatInput.addEventListener('keypress', (e) => {
+  if(e.key === 'Enter'){ sendChat.click(); }
 });
 </script>
 
