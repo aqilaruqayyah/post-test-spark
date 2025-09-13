@@ -145,7 +145,7 @@ selesaiBtn.addEventListener('click', () => {
     soal4: localStorage.getItem("soal4_jawaban") || ""
   };
 
-  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzrAX6GAJgZIzE0-5w007pszeGtj-gEyA8j8TtzIS9aGRj45OsoN95GjukKtmNudIfB/exec", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {"Content-Type": "application/json"}
