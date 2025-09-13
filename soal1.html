@@ -30,6 +30,7 @@
       max-width: 700px;
       width: 100%;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      position: relative;
     }
 
     h2 {
@@ -100,16 +101,57 @@
     }
 
     @media (max-width: 480px) {
-      model-viewer {
-        height: 200px;
-      }
-      .input-container input {
-        width: 50px;
-      }
-      .jawaban-container input {
-        width: 100%;
-      }
+      model-viewer { height: 200px; }
+      .input-container input { width: 50px; }
+      .jawaban-container input { width: 100%; }
     }
+
+    /* Chat Button */
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6a5acd, #4a90e2);
+      background-image: url('https://raw.githubusercontent.com/aqilaruqayyah/model-3d/main/geo.jpg');
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 9999;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #chatButton:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+
+    /* Chat Modal */
+    #chatModal {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 300px;
+      max-width: 300px;
+      height: 400px;
+      border: 2px solid #6a5acd;
+      border-radius: 15px;
+      overflow: hidden;
+      z-index: 9998;
+      background: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    #chatIframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
   </style>
 </head>
 <body>
@@ -141,6 +183,14 @@
   <button id="nextSoal">Simpan Jawaban & Lanjut ke Soal 2</button>
 </div>
 
+<!-- Chat Button -->
+<div id="chatButton"></div>
+
+<!-- Chat Modal -->
+<div id="chatModal">
+  <iframe id="chatIframe" src="https://www.chatbase.co/chatbot-iframe/ANlquYKXbQTA8BJfZz5td"></iframe>
+</div>
+
 <script>
 const btn3D = document.getElementById('lihat3D');
 const model = document.getElementById('bak3d');
@@ -150,10 +200,6 @@ const nextBtn = document.getElementById('nextSoal');
 const panjangAsli = 2;
 const lebarAsli = 1.5;
 const tinggiAsli = 1;
-
-// Frame referensi
-const frameWidth = 700;
-const frameHeight = 300;
 
 btn3D.addEventListener('click', () => {
   const p = parseFloat(document.getElementById('panjang').value);
@@ -165,34 +211,37 @@ btn3D.addEventListener('click', () => {
     return;
   }
 
-  // Tampilkan model
   model.style.display = 'block';
-
-  // Skala per dimensi
-  let scaleX = p / panjangAsli;
-  let scaleY = t / tinggiAsli;
-  let scaleZ = l / lebarAsli;
-
-  scaleX = Math.min(scaleX, frameWidth / panjangAsli);
-  scaleY = Math.min(scaleY, frameHeight / tinggiAsli);
-  scaleZ = Math.min(scaleZ, frameWidth / lebarAsli);
-
-  model.style.transform = `scale3d(${scaleX}, ${scaleY}, ${scaleZ})`;
+  model.style.transform = `scale3d(${p/panjangAsli}, ${t/tinggiAsli}, ${l/lebarAsli})`;
 
   // Simpan ukuran ke localStorage
   localStorage.setItem("soal1_ukuran", `${p},${l},${t}`);
 });
 
-// Simpan jawaban dan lanjut ke soal 2
+// Simpan jawaban & nama siswa untuk Post-Test
 nextBtn.addEventListener('click', () => {
   const jawaban = document.getElementById('jawaban').value.trim();
+  const namaSiswa = localStorage.getItem("namaSiswa");
+  if(!namaSiswa){
+    alert("Nama siswa tidak ditemukan! Kembali ke halaman awal.");
+    window.location.href = "index.html";
+    return;
+  }
   if(!jawaban){
     alert("Jawaban harus diisi!");
     return;
   }
 
   localStorage.setItem("soal1_jawaban", jawaban);
-  window.location.href = "soal2.html"; // redirect ke soal 2
+  // Bisa tambahkan logika untuk kirim ke AppScript nanti
+  window.location.href = "soal2.html";
+});
+
+// Chat toggle
+const chatButton = document.getElementById('chatButton');
+const chatModal = document.getElementById('chatModal');
+chatButton.addEventListener('click', () => {
+  chatModal.style.display = chatModal.style.display === 'block' ? 'none' : 'block';
 });
 </script>
 
